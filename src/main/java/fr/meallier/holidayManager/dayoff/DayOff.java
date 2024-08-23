@@ -1,6 +1,6 @@
-package fr.meallier.holiday.dayoff;
+package fr.meallier.holidayManager.dayoff;
 
-import fr.meallier.holiday.dayoff.algorithm.DayOffAlgorithm;
+import fr.meallier.holidayManager.dayoff.algorithm.DayOffAlgorithm;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

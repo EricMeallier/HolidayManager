@@ -1,6 +1,6 @@
-package fr.meallier.holiday.holiday.algorithm.instance;
+package fr.meallier.holidayManager.holiday.algorithm.instance;
 
-import fr.meallier.holiday.holiday.algorithm.HolidayComputeAlgorithm;
+import fr.meallier.holidayManager.holiday.algorithm.HolidayComputeAlgorithm;
 
 import java.time.LocalDate;
 

@@ -1,7 +1,7 @@
-package fr.meallier.holiday;
+package fr.meallier.holidayManager;
 
-import fr.meallier.holiday.holiday.Holiday;
-import fr.meallier.holiday.holiday.algorithm.HolidayAlgorithm;
+import fr.meallier.holidayManager.holiday.Holiday;
+import fr.meallier.holidayManager.holiday.algorithm.HolidayAlgorithm;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

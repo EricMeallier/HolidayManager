@@ -1,8 +1,8 @@
-package fr.meallier.holiday;
+package fr.meallier.holidayManager;
 
-import fr.meallier.holiday.dayoff.DayOff;
-import fr.meallier.holiday.dayoff.DayOffRecurrentDateFrequency;
-import fr.meallier.holiday.dayoff.algorithm.DayOffAlgorithm;
+import fr.meallier.holidayManager.dayoff.DayOff;
+import fr.meallier.holidayManager.dayoff.DayOffRecurrentDateFrequency;
+import fr.meallier.holidayManager.dayoff.algorithm.DayOffAlgorithm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

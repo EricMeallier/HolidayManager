@@ -1,4 +1,4 @@
-package fr.meallier.holiday.holiday.algorithm;
+package fr.meallier.holidayManager.holiday.algorithm;
 
 import java.time.LocalDate;
 

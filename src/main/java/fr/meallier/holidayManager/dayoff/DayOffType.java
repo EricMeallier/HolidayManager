@@ -1,4 +1,4 @@
-package fr.meallier.holiday.dayoff;
+package fr.meallier.holidayManager.dayoff;
 
 public enum DayOffType {
 

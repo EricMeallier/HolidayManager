@@ -1,6 +1,6 @@
-package fr.meallier.holiday.dayoff.algorithm;
+package fr.meallier.holidayManager.dayoff.algorithm;
 
-import fr.meallier.holiday.dayoff.algorithm.instance.LastDayOfMonthAlgorithm;
+import fr.meallier.holidayManager.dayoff.algorithm.instance.LastDayOfMonthAlgorithm;
 
 public enum DayOffAlgorithm {
 	
