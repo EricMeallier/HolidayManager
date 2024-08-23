@@ -1,5 +1,8 @@
 package fr.meallier.holidayManager;
 
+import fr.meallier.holidayManager.agency.AgencyDate;
+import fr.meallier.holidayManager.agency.AgencyDefaultStatus;
+import fr.meallier.holidayManager.agency.AgencyStatus;
 import fr.meallier.holidayManager.dayoff.DayOff;
 import fr.meallier.holidayManager.holiday.Holiday;
 import fr.meallier.holidayManager.holiday.algorithm.HolidayAlgorithm;
@@ -46,10 +49,30 @@ public class HolidayApplication implements CommandLineRunner {
 			LOG.info("[{}]:{}", i, TravailleAnnee(i));
 		}
 
+        AgencyDefaultStatus[] weeklyDefaultStatus = new AgencyDefaultStatus[7];
+        weeklyDefaultStatus[0] = AgencyDefaultStatus.buildStatus(DayOfWeek.MONDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
+        weeklyDefaultStatus[1] = AgencyDefaultStatus.buildStatus(DayOfWeek.TUESDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
+        weeklyDefaultStatus[2] = AgencyDefaultStatus.buildStatus(DayOfWeek.WEDNESDAY, LocalTime.of(13, 30), LocalTime.of(18, 0));
+        weeklyDefaultStatus[3] = AgencyDefaultStatus.buildStatus(DayOfWeek.THURSDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
+        weeklyDefaultStatus[4] = AgencyDefaultStatus.buildStatus(DayOfWeek.FRIDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
+        weeklyDefaultStatus[5] = AgencyDefaultStatus.buildStatus(DayOfWeek.SATURDAY, LocalTime.of(9, 30), LocalTime.of(12, 0));
+        weeklyDefaultStatus[6] = AgencyDefaultStatus.buildStatusClosed(DayOfWeek.SUNDAY);
+
+        List<AgencyDate> agencyDates = new CalendarManager().buildWeekCalendarAgency(weeklyDefaultStatus, 2024, 33, holidayLanguedoc, dayoffLanguedoc);
+        for (AgencyDate date : agencyDates) {
+            if (date.getStatus().equals(AgencyStatus.OPEN)) {
+                if (date.getOpeningPeriods().length > 1)
+                    LOG.info(date.getDate() + ": " + date.getStatus() + " " + date.getOpeningPeriods()[0] + "-" + date.getClosingPeriods()[0] + " " + date.getOpeningPeriods()[1] + "-" + date.getClosingPeriods()[1]);
+                else
+                    LOG.info(date.getDate() + ": " + date.getStatus() + " " + date.getOpeningPeriods()[0] + "-" + date.getClosingPeriods()[0]);
+            } else {
+                LOG.info(date.getDate() + ": " + date.getStatus());
+            }
+        }
 	}
 
 	private String TravailleAnnee(int year) {
-		var listDates = new CalendarManager().getCalendar(year, holidayLanguedoc, dayoffLanguedoc);
+        var listDates = new CalendarManager().buildCalendar(year, holidayLanguedoc, dayoffLanguedoc);
 		// calendrier des absences
 		for (LocalDate d : listDates) {
 			LOG.debug("Date fermeture: {}", d.toString());
