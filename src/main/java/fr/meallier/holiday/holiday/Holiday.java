@@ -1,12 +1,11 @@
 package fr.meallier.holiday.holiday;
 
+import fr.meallier.holiday.holiday.algorithm.HolidayAlgorithm;
+
 import java.time.LocalDate;
 import java.time.MonthDay;
 
-import fr.meallier.holiday.holiday.algorithm.HolidayAlgorithm;
-
 public class Holiday {
-	long id;
 	String description;
 	HolidayType holidayType;
 	HolidayAlgorithm holidayAlgorithm;
@@ -34,39 +33,10 @@ public class Holiday {
 		return new Holiday(description, HolidayType.COMPUTED, holidayAlgorithm);
 	}
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public HolidayType getHolidayType() {
-		return holidayType;
-	}
-	public void setHolidayType(HolidayType holidayType) {
-		this.holidayType = holidayType;
-	}
-	public HolidayAlgorithm getHolidayAlgorithm() {
-		return holidayAlgorithm;
-	}
-	public void setHolidayAlgorithm(HolidayAlgorithm holidayAlgorithm) {
-		this.holidayAlgorithm = holidayAlgorithm;
-	}
-
 	public LocalDate compute(int year) {
-		switch (this.holidayType) {
-			case FIXED:
-				return this.holidayDate.atYear(year);
-			case COMPUTED:
-				return this.holidayAlgorithm.getValue().compute(year);
-			default:
-				throw new IllegalStateException("Unexpected value: " + this.holidayType);
-		}
+		return switch (this.holidayType) {
+			case FIXED -> this.holidayDate.atYear(year);
+			case COMPUTED -> this.holidayAlgorithm.getValue().compute(year);
+		};
 	}
 }

@@ -1,8 +1,8 @@
 package fr.meallier.holiday;
 
-import fr.meallier.holiday.off.DayOff;
-import fr.meallier.holiday.off.DayOffRecurrentDateFrequency;
-import fr.meallier.holiday.off.algorithm.DayOffAlgorithm;
+import fr.meallier.holiday.dayoff.DayOff;
+import fr.meallier.holiday.dayoff.DayOffRecurrentDateFrequency;
+import fr.meallier.holiday.dayoff.algorithm.DayOffAlgorithm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,14 +11,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
-import java.time.chrono.ChronoLocalDate;
 
 @SpringBootTest
 class DayOffTests {
-
-	@Test
-	void contextLoads() {
-	}
 
 	@Test
 	void DayOffWeeklyTests() {
@@ -39,42 +34,57 @@ class DayOffTests {
 	@Test
 	void RecurrentDateMonthlyTests() {
 		DayOff dayOff = DayOff.buildRecurrentDate("Recurrent Monthly", DayOffRecurrentDateFrequency.MONTHLY, MonthDay.of(Month.JULY,14));
-		Assertions.assertEquals(LocalDate.of(2025,7,14), dayOff.computeNextFrom(LocalDate.of(2025,3,25)));
-		Assertions.assertEquals(LocalDate.of(2026,7,14), dayOff.computeNextFrom(LocalDate.of(2025,8,25)));
+		Assertions.assertEquals(LocalDate.of(2025, 4, 14), dayOff.computeNextFrom(LocalDate.of(2025, 3, 25)));
+		Assertions.assertEquals(LocalDate.of(2025, 9, 14), dayOff.computeNextFrom(LocalDate.of(2025, 8, 25)));
 		Assertions.assertEquals(LocalDate.of(2025,7,14), dayOff.computeNextFrom(LocalDate.of(2025,7,14)));
 	}
 
 	@Test
 	void RecurrentDateQuarterlyTests() {
 		DayOff dayOff = DayOff.buildRecurrentDate("Recurrent Quartly", DayOffRecurrentDateFrequency.QUARTERLY, MonthDay.of(Month.JULY,14));
-		// TODO
+
+		Assertions.assertEquals(LocalDate.of(2025, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 7, 14)));
+		Assertions.assertEquals(LocalDate.of(2025, 10, 14), dayOff.computeNextFrom(LocalDate.of(2025, 7, 15)));
+		Assertions.assertEquals(LocalDate.of(2025, 10, 14), dayOff.computeNextFrom(LocalDate.of(2025, 10, 1)));
+		Assertions.assertEquals(LocalDate.of(2026, 1, 14), dayOff.computeNextFrom(LocalDate.of(2025, 12, 1)));
 	}
 
 	@Test
 	void RecurrentDateHalYearlyTests() {
 		DayOff dayOff = DayOff.buildRecurrentDate("Recurrent HalfYearly", DayOffRecurrentDateFrequency.HALFYEARLY, MonthDay.of(Month.JULY,14));
-		// TODO
+
+		Assertions.assertEquals(LocalDate.of(2025, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 7, 14)));
+		Assertions.assertEquals(LocalDate.of(2025, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 3, 1)));
+		Assertions.assertEquals(LocalDate.of(2026, 1, 14), dayOff.computeNextFrom(LocalDate.of(2025, 10, 1)));
+		Assertions.assertEquals(LocalDate.of(2026, 1, 14), dayOff.computeNextFrom(LocalDate.of(2025, 11, 1)));
 	}
 
 
 	@Test
 	void RecurrentDateYearlyTests() {
 		DayOff dayOff = DayOff.buildRecurrentDate("Recurrent Yearly", DayOffRecurrentDateFrequency.YEARLY, MonthDay.of(Month.JULY,14));
-		// TODO
+
+		Assertions.assertEquals(LocalDate.of(2025, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 7, 14)));
+		Assertions.assertEquals(LocalDate.of(2026, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 7, 15)));
+		Assertions.assertEquals(LocalDate.of(2026, 7, 14), dayOff.computeNextFrom(LocalDate.of(2025, 10, 1)));
 	}
 
 	@Test
 	void RecurrentDayCountTests() {
 		DayOff dayOff = DayOff.buildRecurrentDayCount("Recurrent 100 jours",LocalDate.of(2024,8,23),100 );
-		// TODO
+
+		Assertions.assertEquals(LocalDate.of(2024, 8, 23), dayOff.computeNextFrom(LocalDate.of(2024, 8, 23)));
+		Assertions.assertEquals(LocalDate.of(2024, 12, 1), dayOff.computeNextFrom(LocalDate.of(2024, 8, 24)));
+		Assertions.assertEquals(LocalDate.of(2025, 3, 11), dayOff.computeNextFrom(LocalDate.of(2024, 12, 2)));
+		Assertions.assertEquals(LocalDate.of(2024, 12, 1), dayOff.computeNextFrom(LocalDate.of(2024, 12, 1)));
 	}
 
 	@Test
 	void ComputeDayOffTests() {
 		DayOff dayOff = DayOff.buildComputeDayOff("dernier jour du mois", DayOffAlgorithm.LASTDAYOFMONTH);
-		LocalDate result = dayOff.computeNextFrom(LocalDate.of(2024,8,23));
 
-		Assertions.assertEquals(LocalDate.of(2024,8,31),result);
+		Assertions.assertEquals(LocalDate.of(2024, 8, 31), dayOff.computeNextFrom(LocalDate.of(2024, 8, 23)));
+		Assertions.assertEquals(LocalDate.of(2024, 2, 29), dayOff.computeNextFrom(LocalDate.of(2024, 2, 23)));
 	}
 }
 

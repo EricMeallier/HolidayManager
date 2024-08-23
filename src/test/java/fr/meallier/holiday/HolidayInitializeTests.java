@@ -2,14 +2,10 @@ package fr.meallier.holiday;
 
 import fr.meallier.holiday.holiday.Holiday;
 import fr.meallier.holiday.holiday.algorithm.HolidayAlgorithm;
-import fr.meallier.holiday.off.DayOff;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
 import java.util.ArrayList;

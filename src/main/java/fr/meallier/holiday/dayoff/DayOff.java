@@ -1,15 +1,14 @@
-package fr.meallier.holiday.off;
+package fr.meallier.holiday.dayoff;
 
-import fr.meallier.holiday.off.algorithm.DayOffAlgorithm;
+import fr.meallier.holiday.dayoff.algorithm.DayOffAlgorithm;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.MonthDay;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 
 public class DayOff {
 
-    long id;
     String description;
     DayOffType dayOffType;
     DayOffRecurrentDateFrequency dayOffRecurrentFrequency;
@@ -18,6 +17,8 @@ public class DayOff {
     // Manual date OR starting date
     LocalDate fixedDate;
     int dayCount;
+
+
     DayOffAlgorithm dayOffAlgorithm;
 
     private DayOff(String description, DayOffType dayOffType, DayOffRecurrentDateFrequency dayOffRecurrentFrequency, DayOfWeek startingDayOfWeek, MonthDay startingMonthDay, LocalDate fixedDate, int dayCount,DayOffAlgorithm dayOffAlgorithm) {
@@ -65,9 +66,31 @@ public class DayOff {
                    delta+=7;
                 return targetDate.plusDays(delta);
             case RECURRENT_DATE:
-                throw new UnsupportedOperationException("Not Implemented");
+                long monthCount = ChronoUnit.MONTHS.between(startingMonthDay.atYear(targetDate.getYear() - 1), targetDate);
+                if (dayOffRecurrentFrequency.equals(DayOffRecurrentDateFrequency.QUARTERLY)) {
+                    monthCount = monthCount - monthCount % 3;
+                } else if (dayOffRecurrentFrequency.equals(DayOffRecurrentDateFrequency.HALFYEARLY)) {
+                    monthCount = monthCount - monthCount % 6;
+                } else if (dayOffRecurrentFrequency.equals(DayOffRecurrentDateFrequency.YEARLY)) {
+                    monthCount = monthCount - monthCount % 12;
+                }
+                LocalDate result = startingMonthDay.atYear(targetDate.getYear() - 1).plusMonths(monthCount);
+                if (result.isBefore(targetDate)) {
+                    return switch (dayOffRecurrentFrequency) {
+                        case YEARLY -> result.plusMonths(12);
+                        case HALFYEARLY -> result.plusMonths(6);
+                        case QUARTERLY -> result.plusMonths(3);
+                        case MONTHLY -> result.plusMonths(1);
+                    };
+                }
+                return result;
             case RECURRENT_DAYCOUNT:
-                throw new UnsupportedOperationException("Not Implemented");
+                long dayDelta = ChronoUnit.DAYS.between(fixedDate, targetDate);
+                dayDelta = dayDelta - dayDelta % dayCount;
+                LocalDate resultDay = fixedDate.plusDays(dayDelta);
+                if (resultDay.isBefore(targetDate))
+                    return resultDay.plusDays(dayCount);
+                return resultDay;
             case COMPUTE:
                 return dayOffAlgorithm.getValue().compute(targetDate);
             default:
@@ -75,7 +98,4 @@ public class DayOff {
         }
     }
 
-    List<LocalDate> computeForYear(int year) {
-        return null;
-    }
 }
