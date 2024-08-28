@@ -1,27 +1,43 @@
 package fr.meallier.holidayManager.dayoff;
 
 import fr.meallier.holidayManager.dayoff.algorithm.DayOffAlgorithm;
+import fr.meallier.holidayManager.persistence.DayOfWeekConverter;
+import fr.meallier.holidayManager.persistence.MonthDayConverter;
+import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
+@Entity
 public class DayOff {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
+    @Column
     String description;
+    @Column
     DayOffType dayOffType;
+    @Column
     DayOffRecurrentDateFrequency dayOffRecurrentFrequency;
+    @Column
+    @Convert(converter = DayOfWeekConverter.class)
     DayOfWeek startingDayOfWeek;
+    @Column
+    @Convert(converter = MonthDayConverter.class)
     MonthDay startingMonthDay;
     // Manual date OR starting date
     LocalDate fixedDate;
     int dayCount;
-
-
     DayOffAlgorithm dayOffAlgorithm;
 
-    private DayOff(String description, DayOffType dayOffType, DayOffRecurrentDateFrequency dayOffRecurrentFrequency, DayOfWeek startingDayOfWeek, MonthDay startingMonthDay, LocalDate fixedDate, int dayCount,DayOffAlgorithm dayOffAlgorithm) {
+    public DayOff() {
+    }
+
+    private DayOff(String description, DayOffType dayOffType, DayOffRecurrentDateFrequency dayOffRecurrentFrequency, DayOfWeek startingDayOfWeek, MonthDay startingMonthDay, LocalDate fixedDate, int dayCount, DayOffAlgorithm dayOffAlgorithm) {
         this.description = description;
         this.dayOffType = dayOffType;
         this.dayOffRecurrentFrequency = dayOffRecurrentFrequency;

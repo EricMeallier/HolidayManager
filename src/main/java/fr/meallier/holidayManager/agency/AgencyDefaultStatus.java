@@ -1,19 +1,35 @@
 package fr.meallier.holidayManager.agency;
 
+import fr.meallier.holidayManager.persistence.DayOfWeekConverter;
+import fr.meallier.holidayManager.persistence.LocalTimeArrayConverter;
+import jakarta.persistence.*;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.UUID;
 
+@Entity
 public class AgencyDefaultStatus {
 
-    DayOfWeek day;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
+    @Column
+    @Convert(converter = DayOfWeekConverter.class)
+    DayOfWeek dayOfWeek;
+    @Column
     AgencyStatus status;
-
-
+    @Column
+    @Convert(converter = LocalTimeArrayConverter.class)
     LocalTime[] OpeningPeriods;
+    @Column
+    @Convert(converter = LocalTimeArrayConverter.class)
     LocalTime[] ClosingPeriods;
 
+    public AgencyDefaultStatus() {
+    }
     private AgencyDefaultStatus(DayOfWeek day, AgencyStatus status) {
-        this.day = day;
+        this.dayOfWeek = day;
         this.status = status;
     }
 
@@ -47,12 +63,12 @@ public class AgencyDefaultStatus {
         return new AgencyDefaultStatus(day, AgencyStatus.CLOSED);
     }
 
-    public DayOfWeek getDay() {
-        return day;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setDay(DayOfWeek day) {
-        this.day = day;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public AgencyStatus getStatus() {

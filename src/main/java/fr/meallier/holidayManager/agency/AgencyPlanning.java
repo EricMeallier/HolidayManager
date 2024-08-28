@@ -3,7 +3,7 @@ package fr.meallier.holidayManager.agency;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AgencyDate {
+public class AgencyPlanning {
 
     LocalDate date;
     AgencyStatus status;
@@ -11,8 +11,8 @@ public class AgencyDate {
     LocalTime[] closingPeriods;
 
 
-    public static AgencyDate duplicateFromDefault(AgencyDefaultStatus defaultStatus, LocalDate date) {
-        AgencyDate result = new AgencyDate();
+    public static AgencyPlanning duplicateFromDefault(AgencyDefaultStatus defaultStatus, LocalDate date) {
+        AgencyPlanning result = new AgencyPlanning();
         result.date = date;
         result.status = defaultStatus.status;
         result.openingPeriods = defaultStatus.OpeningPeriods;
@@ -21,8 +21,8 @@ public class AgencyDate {
         return result;
     }
 
-    public static AgencyDate buildOff(LocalDate date) {
-        AgencyDate result = new AgencyDate();
+    public static AgencyPlanning buildOff(LocalDate date) {
+        AgencyPlanning result = new AgencyPlanning();
         result.date = date;
         result.status = AgencyStatus.CLOSED;
 

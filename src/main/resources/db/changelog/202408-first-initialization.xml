@@ -1,0 +1,70 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--Added the entity Car-->
+    <changeSet id="20170503041524-1" author="user">
+        <createTable tableName="HOLIDAY">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="HOLIDAY_TYPE" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HOLIDAY_ALGORITHM" type="tinyint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="HOLIDAY_DATE" type="smallint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="DAY_OFF">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DAY_COUNT" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DAY_OFF_ALGORITHM" type="tinyint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DAY_OFF_RECURRENT_FREQUENCY" type="tinyint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DAY_OFF_TYPE" type="tinyint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="FIXED_DATE" type="date">
+                <constraints nullable="true"/>
+            </column>
+            <column name="STARTING_DAY_OF_WEEK" type="smallint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="STARTING_MONTH_DAY" type="smallint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="AGENCY_DEFAULT_STATUS">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DAY_OF_WEEK" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OPENING_PERIODS" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CLOSING_PERIODS" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

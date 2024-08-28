@@ -1,14 +1,17 @@
 package fr.meallier.holidayManager;
 
-import fr.meallier.holidayManager.agency.AgencyDate;
 import fr.meallier.holidayManager.agency.AgencyDefaultStatus;
+import fr.meallier.holidayManager.agency.AgencyPlanning;
 import fr.meallier.holidayManager.agency.AgencyStatus;
 import fr.meallier.holidayManager.dayoff.DayOff;
 import fr.meallier.holidayManager.holiday.Holiday;
 import fr.meallier.holidayManager.holiday.algorithm.HolidayAlgorithm;
+import fr.meallier.holidayManager.persistence.AgencyDefaultStatusDAO;
+import fr.meallier.holidayManager.persistence.DayOffDAO;
+import fr.meallier.holidayManager.persistence.HolidayDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class HolidayApplication implements CommandLineRunner {
-
+public class HolidayApplication { //implements CommandLineRunner {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(HolidayApplication.class);
 	public static void main(String[] args) {
@@ -28,7 +30,15 @@ public class HolidayApplication implements CommandLineRunner {
 	List<Holiday> holidayLanguedoc = new ArrayList<>();
 	List<DayOff> dayoffLanguedoc = new ArrayList<>();
 
-	@Override
+    @Autowired
+    HolidayDAO holidayDAO;
+
+    @Autowired
+    DayOffDAO dayOffDAO;
+
+    @Autowired
+    AgencyDefaultStatusDAO agencyDefaultStatusDAO;
+
 	public void run(String... args) throws Exception {
 		holidayLanguedoc.add(Holiday.buildFixedHoliday("Nouvel An", MonthDay.of(Month.JANUARY, 1)));
 		holidayLanguedoc.add(Holiday.buildComputedHoliday("Paques", HolidayAlgorithm.EASTER));
@@ -58,8 +68,8 @@ public class HolidayApplication implements CommandLineRunner {
         weeklyDefaultStatus[5] = AgencyDefaultStatus.buildStatus(DayOfWeek.SATURDAY, LocalTime.of(9, 30), LocalTime.of(12, 0));
         weeklyDefaultStatus[6] = AgencyDefaultStatus.buildStatusClosed(DayOfWeek.SUNDAY);
 
-        List<AgencyDate> agencyDates = new CalendarManager().buildWeekCalendarAgency(weeklyDefaultStatus, 2024, 33, holidayLanguedoc, dayoffLanguedoc);
-        for (AgencyDate date : agencyDates) {
+        List<AgencyPlanning> agencyDates = new CalendarManager().buildWeekCalendarAgency(weeklyDefaultStatus, 2024, 33, holidayLanguedoc, dayoffLanguedoc);
+        for (AgencyPlanning date : agencyDates) {
             if (date.getStatus().equals(AgencyStatus.OPEN)) {
                 if (date.getOpeningPeriods().length > 1)
                     LOG.info(date.getDate() + ": " + date.getStatus() + " " + date.getOpeningPeriods()[0] + "-" + date.getClosingPeriods()[0] + " " + date.getOpeningPeriods()[1] + "-" + date.getClosingPeriods()[1]);
@@ -69,6 +79,9 @@ public class HolidayApplication implements CommandLineRunner {
                 LOG.info(date.getDate() + ": " + date.getStatus());
             }
         }
+
+        holidayLanguedoc.stream().forEach(holidayDAO::save);
+        dayoffLanguedoc.stream().forEach(dayOffDAO::save);
 	}
 
 	private String TravailleAnnee(int year) {
