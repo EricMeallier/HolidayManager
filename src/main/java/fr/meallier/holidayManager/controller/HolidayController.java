@@ -32,7 +32,6 @@ public class HolidayController {
         }
     }
 
-
     @PostMapping
     public ResponseEntity<Holiday> saveData(@RequestBody Holiday holiday) {
         try {
@@ -43,7 +42,7 @@ public class HolidayController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{uuid}")
     public ResponseEntity<Holiday> getData(@PathVariable UUID uuid) {
         try {
             var result = holidayService.getItem(uuid);

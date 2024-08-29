@@ -56,7 +56,7 @@ public class AgencyDefaultStatusController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{uuid}")
     public ResponseEntity<AgencyDefaultStatus> getData(@PathVariable UUID uuid) {
         try {
             var result = agencyDefaultStatusDAO.findById(uuid);
