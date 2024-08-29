@@ -14,10 +14,6 @@ import java.time.MonthDay;
 class HolidayTests {
 
 	@Test
-	void contextLoads() {
-	}
-
-	@Test
 	void EasterTests() {
 		Holiday holiday = Holiday.buildComputedHoliday("Paques", HolidayAlgorithm.EASTER );
 

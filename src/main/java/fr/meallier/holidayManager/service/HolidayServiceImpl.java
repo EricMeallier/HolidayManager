@@ -12,6 +12,7 @@ import java.time.Month;
 import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HolidayServiceImpl implements HolidayService {
@@ -23,6 +24,7 @@ public class HolidayServiceImpl implements HolidayService {
     HolidayDAO holidayDAO;
 
     public void fillData() {
+        LOG.debug("Filldata for holiday");
         List<Holiday> holidayLanguedoc = new ArrayList<>();
 
         holidayLanguedoc.add(Holiday.buildFixedHoliday("Nouvel An", MonthDay.of(Month.JANUARY, 1)));
@@ -38,7 +40,7 @@ public class HolidayServiceImpl implements HolidayService {
         holidayLanguedoc.add(Holiday.buildFixedHoliday("Noel", MonthDay.of(Month.DECEMBER, 25)));
 
 
-        holidayLanguedoc.stream().forEach(holidayDAO::save);
+        holidayLanguedoc.forEach(holidayDAO::save);
     }
 
     public void save(Holiday holiday) {
@@ -46,7 +48,14 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     public List<Holiday> getAll() {
-        LOG.info("getAll");
         return new ArrayList<>(holidayDAO.findAll());
+    }
+
+    public Holiday getItem(UUID uuid) {
+        var result = holidayDAO.findById(uuid);
+        if (result.isPresent())
+            return result.get();
+        else
+            return null;
     }
 }

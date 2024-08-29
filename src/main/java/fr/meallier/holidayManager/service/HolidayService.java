@@ -4,13 +4,16 @@ import fr.meallier.holidayManager.holiday.Holiday;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public interface HolidayService {
 
-    public void fillData();
+    void fillData();
 
-    public void save(Holiday holiday);
+    void save(Holiday holiday);
 
-    public List<Holiday> getAll();
+    List<Holiday> getAll();
+
+    Holiday getItem(UUID uuid);
 }

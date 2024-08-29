@@ -25,7 +25,6 @@ public class HolidayController {
     @GetMapping("/fillData")
     public ResponseEntity<Void> fillData() {
         try {
-            LOG.info("FillData");
             holidayService.fillData();
             return new ResponseEntity<>(HttpStatusCode.valueOf(200));
         } catch (Exception e) {
@@ -34,7 +33,7 @@ public class HolidayController {
     }
 
 
-    @PostMapping(value = "/user")
+    @PostMapping
     public ResponseEntity<Holiday> saveData(@RequestBody Holiday holiday) {
         try {
             holidayService.save(holiday);
@@ -47,7 +46,11 @@ public class HolidayController {
     @GetMapping("/{id}")
     public ResponseEntity<Holiday> getData(@PathVariable UUID uuid) {
         try {
-            return null;
+            var result = holidayService.getItem(uuid);
+            if (result == null)
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatusCode.valueOf(500));
         }
@@ -56,16 +59,11 @@ public class HolidayController {
     @GetMapping
     public ResponseEntity<List<Holiday>> getData() {
         try {
-            LOG.info("getData");
-
             List<Holiday> result = holidayService.getAll();
 
-
             if (result.isEmpty()) {
-                LOG.info("No data");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
-                LOG.info("All data: {}", result);
                 return new ResponseEntity<>(holidayService.getAll(), HttpStatus.OK);
             }
         } catch (Exception e) {

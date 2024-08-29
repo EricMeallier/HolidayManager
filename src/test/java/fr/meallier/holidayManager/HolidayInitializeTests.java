@@ -3,7 +3,6 @@ package fr.meallier.holidayManager;
 import fr.meallier.holidayManager.holiday.Holiday;
 import fr.meallier.holidayManager.holiday.algorithm.HolidayAlgorithm;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Month;
@@ -17,10 +16,6 @@ class HolidayInitializeTests {
 	static List<Holiday> holidayLanguedoc;
 
 	static List<Holiday> holidayOther;
-
-	@Test
-	void contextLoads() {
-	}
 
 	@BeforeAll
 	static void initializeHoliday() {

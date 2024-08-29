@@ -1,5 +1,6 @@
 package fr.meallier.holidayManager.agency;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.meallier.holidayManager.persistence.DayOfWeekConverter;
 import fr.meallier.holidayManager.persistence.LocalTimeArrayConverter;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ public class AgencyDefaultStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonProperty
     UUID id;
     @Column
     @Convert(converter = DayOfWeekConverter.class)

@@ -27,8 +27,8 @@ public class HolidayApplication { //implements CommandLineRunner {
 		SpringApplication.run(HolidayApplication.class, args);
 	}
 
-	List<Holiday> holidayLanguedoc = new ArrayList<>();
-	List<DayOff> dayoffLanguedoc = new ArrayList<>();
+    final List<Holiday> holidayLanguedoc = new ArrayList<>();
+    final List<DayOff> dayoffLanguedoc = new ArrayList<>();
 
     @Autowired
     HolidayDAO holidayDAO;
@@ -80,8 +80,8 @@ public class HolidayApplication { //implements CommandLineRunner {
             }
         }
 
-        holidayLanguedoc.stream().forEach(holidayDAO::save);
-        dayoffLanguedoc.stream().forEach(dayOffDAO::save);
+        holidayLanguedoc.forEach(holidayDAO::save);
+        dayoffLanguedoc.forEach(dayOffDAO::save);
 	}
 
 	private String TravailleAnnee(int year) {

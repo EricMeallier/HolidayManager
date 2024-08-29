@@ -1,5 +1,14 @@
 package fr.meallier.holidayManager.dayoff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.MonthDayDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import fr.meallier.holidayManager.dayoff.algorithm.DayOffAlgorithm;
 import fr.meallier.holidayManager.persistence.DayOfWeekConverter;
 import fr.meallier.holidayManager.persistence.MonthDayConverter;
@@ -16,22 +25,34 @@ public class DayOff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonProperty
     UUID id;
     @Column
+    @JsonProperty
     String description;
     @Column
+    @JsonProperty
     DayOffType dayOffType;
     @Column
+    @JsonProperty
     DayOffRecurrentDateFrequency dayOffRecurrentFrequency;
     @Column
     @Convert(converter = DayOfWeekConverter.class)
+    @JsonInclude
     DayOfWeek startingDayOfWeek;
     @Column
     @Convert(converter = MonthDayConverter.class)
+    @JsonSerialize(using = MonthDaySerializer.class)
+    @JsonDeserialize(using = MonthDayDeserializer.class)
     MonthDay startingMonthDay;
     // Manual date OR starting date
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     LocalDate fixedDate;
+    @JsonProperty
     int dayCount;
+    @JsonProperty
     DayOffAlgorithm dayOffAlgorithm;
 
     public DayOff() {

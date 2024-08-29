@@ -28,7 +28,7 @@ public class AgencyDefaultStatusController {
     @GetMapping("/fillData")
     public ResponseEntity<Void> fillData() {
         try {
-            LOG.info("FillData");
+            LOG.info("FillData for agency default");
             AgencyDefaultStatus[] weeklyDefaultStatus = new AgencyDefaultStatus[7];
             weeklyDefaultStatus[0] = AgencyDefaultStatus.buildStatus(DayOfWeek.MONDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
             weeklyDefaultStatus[1] = AgencyDefaultStatus.buildStatus(DayOfWeek.TUESDAY, LocalTime.of(9, 30), LocalTime.of(12, 0), LocalTime.of(13, 30), LocalTime.of(17, 30));
@@ -49,7 +49,7 @@ public class AgencyDefaultStatusController {
     @PostMapping
     public ResponseEntity<AgencyDefaultStatus> saveData(@RequestBody AgencyDefaultStatus agencyDefaultStatus) {
         try {
-            //holidayService.save(holiday);
+            agencyDefaultStatusDAO.save(agencyDefaultStatus);
             return new ResponseEntity<>(HttpStatusCode.valueOf(200));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatusCode.valueOf(500));
@@ -59,7 +59,11 @@ public class AgencyDefaultStatusController {
     @GetMapping("/{id}")
     public ResponseEntity<AgencyDefaultStatus> getData(@PathVariable UUID uuid) {
         try {
-            return null;
+            var result = agencyDefaultStatusDAO.findById(uuid);
+            if (result.isPresent())
+                return new ResponseEntity<>(result.get(), HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatusCode.valueOf(500));
         }
@@ -68,15 +72,11 @@ public class AgencyDefaultStatusController {
     @GetMapping
     public ResponseEntity<List<AgencyDefaultStatus>> getData() {
         try {
-            LOG.info("getData");
-
             List<AgencyDefaultStatus> result = agencyDefaultStatusDAO.findAll();
 
             if (result.isEmpty()) {
-                LOG.info("No data");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
-                LOG.info("All data: {}", result);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
         } catch (Exception e) {
